@@ -2,6 +2,7 @@ package br.com.trainning.pdv_2016.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 
 import br.com.trainning.pdv_2016.R;
+import br.com.trainning.pdv_2016.domain.model.Produto;
+import br.com.trainning.pdv_2016.domain.util.Base64Util;
 import br.com.trainning.pdv_2016.domain.util.ImageInputHelper;
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -42,6 +45,7 @@ public class CadastroNovoActivity extends BaseActivity implements ImageInputHelp
     ImageButton imageButtonGaleria;
 
     private ImageInputHelper imageInputHelper;
+    private Produto produto;
 
 
     @Override
@@ -62,6 +66,24 @@ public class CadastroNovoActivity extends BaseActivity implements ImageInputHelp
                 Log.d("Cadastro",editTextUnidade.getText().toString());
                 Log.d("Cadastro",editTextPreco.getText().toString());
                 Log.d("Cadastro",editTextCodigo.getText().toString());
+                produto = new Produto();
+                produto.setId(0L);
+                produto.setDescricao(editTextDescricao.getText().toString());
+                produto.setUnidade(editTextUnidade.getText().toString());
+                produto.setCodigoBarras(editTextCodigo.getText().toString());
+                if(!editTextPreco.getText().toString().equals("")){
+                    produto.setPreco(Double.parseDouble(editTextPreco.getText().toString()));
+                }else{
+                    produto.setPreco(0.0);
+                }
+
+                Bitmap imagem = ((BitmapDrawable)imageViewFoto.getDrawable()).getBitmap();
+
+                produto.setFoto(Base64Util.encodeTobase64(imagem));
+
+                produto.save();
+                finish();
+
 
             }
         });

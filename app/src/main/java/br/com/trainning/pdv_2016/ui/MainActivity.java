@@ -11,9 +11,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import br.com.trainning.pdv_2016.R;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import br.com.trainning.pdv_2016.R;
+import br.com.trainning.pdv_2016.domain.model.Produto;
+import se.emilsjolander.sprinkles.Query;
+
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,26 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        List<Produto> produtos = Query.all(Produto.class).get().asList();
+        if(produtos!=null){
+            for(Produto p: produtos){
+                Log.d("Produto:","id------------->"+p.getId());
+                Log.d("Produto:","descricao------>"+p.getDescricao());
+                Log.d("Produto:","unidade-------->"+p.getUnidade());
+                Log.d("Produto:","codigo barras-->"+p.getCodigoBarras());
+                Log.d("Produto:","preco---------->"+p.getPreco());
+                Log.d("Produto:","foto----------->"+p.getFoto());
+                Log.d("Produto:","--------------------------------");
+            }
+        }
     }
 
     @Override
@@ -53,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(telaCadastroNovoIntent);
 
         }else if(id == R.id.action_edit){
-            Log.d("MainActivity","Selecionou editar Produto");
-            return true;
+            Intent telaEditarIntent = new Intent(MainActivity.this,EditarProdutoActivity.class);
+            startActivity(telaEditarIntent);
         }
 
         return super.onOptionsItemSelected(item);
