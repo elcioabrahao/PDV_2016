@@ -79,11 +79,8 @@ public class MainActivity extends BaseActivity {
                 // set item width
                 openItem.setWidth(Util.convertPixelsToDp(590.0f,MainActivity.this));
                 // set item title
-                openItem.setTitle("Open");
-                // set item title fontsize
-                openItem.setTitleSize(18);
-                // set item title font color
-                openItem.setTitleColor(Color.WHITE);
+
+                openItem.setIcon(R.drawable.ic_exposure_plus_1_black_36dp);
                 // add to menu
                 menu.addMenuItem(openItem);
 
@@ -106,20 +103,31 @@ public class MainActivity extends BaseActivity {
         listView.setMenuCreator(creator);
 
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                ItemProduto itemProduto = adapter.getItem(position);
+                Item item = Query.one(Item.class,"select * from item where id = ?", itemProduto.getIdItem()).get();
                 switch (index) {
                     case 0:
-                        // open
+                        //Toast.makeText(getApplicationContext(), "Action 1 for " + itemProduto.getDescricao(), Toast.LENGTH_SHORT).show();
+                        item.setQuantidade(item.getQuantidade()+1);
+                        item.save();
+                        list.clear();
+                        popularLista();
                         break;
                     case 1:
-                        // delete
+                        //Toast.makeText(getApplicationContext(), "Action 2 for " + itemProduto.getDescricao(), Toast.LENGTH_SHORT).show();
+                        item.delete();
+                        list.clear();
+                        popularLista();
+
                         break;
                 }
-                // false : close the menu; true : not close the menu
                 return false;
             }
         });
+
 
         popularLista();
 
