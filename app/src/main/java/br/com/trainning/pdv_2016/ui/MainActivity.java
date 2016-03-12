@@ -193,6 +193,7 @@ public class MainActivity extends BaseActivity {
                         item.setIdProduto(produto.getCodigoBarras());
                         item.setQuantidade(1);
                         item.save();
+                        popularLista();
 
 
 
