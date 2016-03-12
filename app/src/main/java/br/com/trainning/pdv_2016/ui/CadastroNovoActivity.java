@@ -100,6 +100,9 @@ public class CadastroNovoActivity extends BaseActivity implements ImageInputHelp
 
                 produto.setFoto(Base64Util.encodeTobase64(imagem));
 
+                produto.setLatitude(latitude);
+                produto.setLongitude(longitude);
+
                 produto.save();
                 finish();
 
