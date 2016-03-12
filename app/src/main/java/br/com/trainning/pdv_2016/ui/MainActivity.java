@@ -27,6 +27,7 @@ import br.com.trainning.pdv_2016.domain.adapter.CustomArrayAdapter;
 import br.com.trainning.pdv_2016.domain.model.Item;
 import br.com.trainning.pdv_2016.domain.model.ItemProduto;
 import br.com.trainning.pdv_2016.domain.model.Produto;
+import br.com.trainning.pdv_2016.domain.util.Util;
 import butterknife.Bind;
 import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
                 openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
                         0xCE)));
                 // set item width
-                openItem.setWidth(90);
+                openItem.setWidth(Util.convertPixelsToDp(590.0f,MainActivity.this));
                 // set item title
                 openItem.setTitle("Open");
                 // set item title fontsize
@@ -93,7 +94,7 @@ public class MainActivity extends BaseActivity {
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
                         0x3F, 0x25)));
                 // set item width
-                deleteItem.setWidth(90);
+                deleteItem.setWidth(Util.convertPixelsToDp(590.0f,MainActivity.this));
                 // set a icon
                 deleteItem.setIcon(R.drawable.ic_remove_shopping_cart_white_36dp);
                 // add to menu
@@ -119,6 +120,8 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
+
+        popularLista();
 
     }
 
@@ -231,6 +234,7 @@ public class MainActivity extends BaseActivity {
             itemProduto = new ItemProduto();
             itemProduto.setIdCompra(1);
             itemProduto.setIdItem(item.getId());
+            itemProduto.setUnidade(produto.getUnidade());
             itemProduto.setFoto(produto.getFoto());
             itemProduto.setDescricao(produto.getDescricao());
             itemProduto.setQuantidade(item.getQuantidade());
@@ -239,7 +243,7 @@ public class MainActivity extends BaseActivity {
             valorTotal+=item.getQuantidade()*produto.getPreco();
             quantidadeItens += item.getQuantidade();
         }
-        getSupportActionBar().setTitle("PDV "+valorTotal);
+        getSupportActionBar().setTitle("PDV "+ Util.getFormatedCurrency(String.valueOf(valorTotal)));
         adapter = new CustomArrayAdapter(this, R.layout.list_item, list);
         listView.setAdapter(adapter);
     }
