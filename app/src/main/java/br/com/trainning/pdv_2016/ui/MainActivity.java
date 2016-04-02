@@ -1,10 +1,15 @@
 package br.com.trainning.pdv_2016.ui;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -63,6 +68,8 @@ public class MainActivity extends BaseActivity {
     private Carrinho carrinho;
     private Compra compra;
 
+    private final static int REQUEST_CODE_PERMISSION = 1;
+
     @Bind(R.id.listView)
     SwipeMenuListView listView;
 
@@ -75,6 +82,8 @@ public class MainActivity extends BaseActivity {
 
         configureProdutoCallback();
         configureCompraCallback();
+
+//        requestPermissions();
 
         dialog = new SpotsDialog(this,"Carregando....");
 
@@ -400,6 +409,41 @@ public class MainActivity extends BaseActivity {
                 Log.e("RETROFIT", "Error:"+error.getMessage());
             }
         };
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_CODE_PERMISSION:
+                if(grantResults[0] ==  PackageManager.PERMISSION_GRANTED){
+
+                    //fazer o necessário
+                }else if(grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    //TODO tratar em caso de Denied
+                }
+
+                if(grantResults[1] ==  PackageManager.PERMISSION_GRANTED){
+                    Log.i("CAMERA PERMISSION", "GRANTED");
+
+                }else if(grantResults[1] == PackageManager.PERMISSION_DENIED){
+                    //TODO tratar em caso de Denied
+                }
+
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void requestPermissions(){
+        String[] perms = { Manifest.permission.READ_CONTACTS , Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+        int hasReadSMSPermission = checkSelfPermission(Manifest.permission.READ_CONTACTS);
+        if(hasReadSMSPermission != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(perms, REQUEST_CODE_PERMISSION);
+            return;
+        }
+
     }
 
 }
